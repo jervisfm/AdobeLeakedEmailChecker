@@ -12,10 +12,6 @@
 
 #include "alec.h"
 
-DECLARE_string(file_path);
-DECLARE_string(dump_file);
-DECLARE_bool(process_raw_dump);
-
 static void OutputFlags() {
   LOG(INFO) << "(LevelDB) file_path: " << FLAGS_file_path;
   LOG(INFO) << "dump_file: " << FLAGS_dump_file;

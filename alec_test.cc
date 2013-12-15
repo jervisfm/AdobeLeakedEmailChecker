@@ -6,15 +6,18 @@
 #include <iostream>
 
 // Custom Common Code
-#include "common/base/flags.h"
-#include "common/base/init.h"
-#include "common/log/log.h"
-#include "common/test/test.h"
+//#include "common/base/flags.h"
+//#include "common/base/init.h"
+//#include "common/log/log.h"
+
 
 #include "alec.h"
+#include "common/test/test.h"
+using namespace alec;
 
 TEST(Alec, DummyTest) {
   EXPECT_TRUE( 1 == 1) << "I should fail";
+  CredentialReader cred_reader("sample_cred.txt");
 }
 
 

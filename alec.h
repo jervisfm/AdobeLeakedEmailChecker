@@ -1,24 +1,24 @@
 #ifndef _ALEC_H__
 #define _ALEC_H__
 
+#include <string>
+
 // Custom Common Code
-#include "common/base/flags.h"
-#include "common/base/init.h"
-#include "common/log/log.h"
+ #include "common/base/flags.h"
+//#include "common/base/init.h"
 #include "common/strings/stringpiece.h"
+#include "common/file/linereader.h"
 
 // Flags
-DEFINE_string(file_path, "adobe.db", 
-	      "Path to LevelDB file containing leaked Adobe passwords."
-	      "Defaults to using 'adobe.db'");
-DEFINE_string(dump_file, "adobe_dump.txt", 
-	      "File path to the uncompressed raw dump of the adobe credentials.");
-DEFINE_bool(process_raw_dump, false, "Assumes that the file path "
-	    "in '--dump_file' points to a raw text dump of the credentials and process them"
-	    "to generate an on disk LEVELDB hashtable with the name specified in '--output_file'."
-            "The LEVELDB hastable will be queryable in O(1) / constant time. ");
 
-using file::FileLineReader; 
+
+
+
+DECLARE_string(file_path);
+DECLARE_string(dump_file);
+DECLARE_bool(process_raw_dump);
+
+using std::string;
 
 namespace alec {
 
@@ -36,7 +36,7 @@ namespace alec {
   public:
     // Reads Raw Credentials stored in the given
     // file name
-    CredentialReader(StringPiece filename);
+    CredentialReader(const string& filename);
 
     // Get the next record of credentials from
     // the underlying file. Returns true on success.
@@ -54,11 +54,12 @@ namespace alec {
     // 'result' - where to stored the parsed Credential
     // Returns true on success.
     static bool ParseLine(const string& line, Credential* result);
+    
     ~CredentialReader();
 
   private:
     string filename_;
-    FileLineReader file_reader_;
+    file::FileLineReader file_reader_;
     
   };
 
