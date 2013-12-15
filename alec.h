@@ -25,7 +25,8 @@ namespace alec {
   struct Credential {
     string email; // email address 
     string hash; // encrypted hash of the user password
-    string adobe_id; // adobe user id
+    string adobe_id; // adobe user id / username
+    string rec_id; // unique record id of this credential from the original dump file. 
     string hint; // password hint
   };
 

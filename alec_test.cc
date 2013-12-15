@@ -9,15 +9,29 @@
 //#include "common/base/flags.h"
 //#include "common/base/init.h"
 //#include "common/log/log.h"
-
+#include "common/test/test.h"
+#include "common/strings/strutil.h"
 
 #include "alec.h"
-#include "common/test/test.h"
+
 using namespace alec;
 
-TEST(Alec, DummyTest) {
-  EXPECT_TRUE( 1 == 1) << "I should fail";
-  CredentialReader cred_reader("sample_cred.txt");
+TEST(Alec, ParseLine) {
+  string line = "000000006-|--|-person6@yahoo.com-|-DGM2c/HbXTIkDDM5y6e6/lQ==-|-same|--";
+  Credential expected_cred;
+  Credential actual_cred;
+
+  expected_cred.rec_id = "000000006";
+  expected_cred.username = "";
+  expected_cred.email = "person6@yahoo.com";
+  expected_cred.hash = "DGM2c/HbXTIkDDM5y6e6/lQ==";
+  expected_cred.hint = "same";
+
+  EXPECT_TRUE(CredentialReader::ParseLine(line, &actual_cred))
+    << "Failed to Parse Line: " << line;
+  EXPECT_TRUE ( expected_cred == actual_cred ) 
+    << "Expected Cred:\n" << expected_cred
+    << "**********\nBut Got:\n" << actual_cred;
 }
 
 

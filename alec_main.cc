@@ -18,7 +18,6 @@ static void OutputFlags() {
   LOG(INFO) << "process_raw_dump?" << FLAGS_process_raw_dump; 
 }
 
-
 // Program Flags
 int main(int argc, char **argv) {
   InitProgram(&argc, &argv);
