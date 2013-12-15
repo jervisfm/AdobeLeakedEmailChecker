@@ -100,9 +100,8 @@ namespace alec {
 
     // Check all the fields are present
     static const int kExpectedPieces = 6;
-    static const string kEmptyField = "--";
     if (pieces.size() != kExpectedPieces) {
-      LOG(ERROR) << "Expected line to have " << expected_pieces 
+      LOG(ERROR) << "Expected line to have " << kExpectedPieces
 		 << " '|'-separates pieces but got " << pieces.size()
 		 << "\nLine:" << line;
       return false;
