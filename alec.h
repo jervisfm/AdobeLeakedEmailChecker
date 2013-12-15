@@ -2,6 +2,7 @@
 #define _ALEC_H__
 
 #include <string>
+#include <iostream>
 
 // Custom Common Code
  #include "common/base/flags.h"
@@ -19,15 +20,29 @@ DECLARE_string(dump_file);
 DECLARE_bool(process_raw_dump);
 
 using std::string;
+using std::ostream;
 
 namespace alec {
 
   struct Credential {
     string email; // email address 
     string hash; // encrypted hash of the user password
-    string adobe_id; // adobe user id / username
+    string username; // adobe user id / username
     string rec_id; // unique record id of this credential from the original dump file. 
     string hint; // password hint
+
+    // Compares two Credential object. Credential
+    // object are considered equal iff their individial
+    // string fields match. 
+    bool operator==(const Credential& other) const;
+    
+    // Gets a String representation of all the details
+    // stored in this credential object. 
+    string ToString() const;
+
+    // Prints the ToString() representation of the 
+    // Credential object. 
+    friend ostream& operator<<(ostream &out, const Credential& other);
   };
 
 

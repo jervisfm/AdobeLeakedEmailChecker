@@ -24,6 +24,29 @@ DEFINE_bool(process_raw_dump, false, "Assumes that the file path "
 using namespace std;
 
 namespace alec {
+  bool Credential::operator==(const Credential& other) const {
+    return 
+      this->email == other.email &&
+      this->hash == other.hash &&
+      this->username == other.username &&
+      this->rec_id == other.rec_id &&
+      this->hint == other.hint;
+  }
+
+  string Credential::ToString() const {
+    string result;
+    result += "Email: '" + email + "'\n";
+    result += "Username: '" + username + "'\n";
+    result += "Record ID: " + rec_id + "\n";
+    result += "Password Hint: '" + hint + "'\n";
+    return result;
+  }
+
+  ostream& operator<<(ostream &out, const Credential& other) {
+    string result = other.ToString();
+    out << result;
+    return out;
+  }
 
   CredentialReader::CredentialReader(const string& filename) : 
     filename_(filename), 
