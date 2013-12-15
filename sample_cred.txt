@@ -1,0 +1,10 @@
+000000001-|--|-person1@hotmail.com-|-GlIPZwkzZYTioxG6CatHBw==-|-mother|--
+000000002-|--|-person2@yahoo.com-|-S8Y0AGpNn7mQ=-|-klaus one|--
+000000003-|--|-person3@gmail.com-|-EPDQDoaNsSRej9JL72Rf2Mg==-|-bdate|--
+000000004-|--|-person4@hotmail.com-|-83urP7Gatizv4Ax7u2jGGHA==-|-jared&apos;s|--
+000000005-|--|-person5@gmail.com-|-Yny1tGQuVcaGQYVzCEsjD+g==-|-|--
+000000006-|--|-person6@yahoo.com-|-DGM2c/HbXTIkDDM5y6e6/lQ==-|-same|--
+000000007-|--|-person7@optonline.net-|-Hb17fGiOs7K+aSMtqJlttPQ==-|-old|--
+000000008-|--|-person8@web.de-|-N2zQrfU/ut8Q=-|-|--
+000000009-|--|-person9@aol.com-|-jV48RCotKt9o6aMjgZFLzYg==-|-rain|--
+000000010-|--|-person10@dls.net-|-IMj2ZmZchtNM=-|-internet|--
