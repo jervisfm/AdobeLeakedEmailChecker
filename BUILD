@@ -7,7 +7,9 @@
   "dependencies": [ "//common/base:flags",
   		    "//common/base:init", 
 		    "//common/log:log",
-		    "//common/strings:stringpiece" ]
+		    "//common/strings:stringpiece", 
+		    "//common/strings:strutil",
+		    "//common/file:linereader ]
   }
 },
 
