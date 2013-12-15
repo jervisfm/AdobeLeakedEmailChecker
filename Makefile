@@ -215,30 +215,42 @@ common/base/init: .gen-obj/common/base/init.cc.o common/log/log common/third_par
 
 .PHONY: common/base/init
 
-
-alec: .gen-obj/alec .gen-files/.dummy.prereqs
-	@ln -f -s .gen-obj/alec alec
+headers.alec := alec.h
 
 
-bin/alec: .gen-obj/alec .gen-files/.dummy.prereqs
-	@mkdir -p bin
-	@ln -f -s ../.gen-obj/alec bin/alec
-
-alec.0:
-
-.PHONY: alec.0
-
-
-.gen-obj/alec.cc.o: .gen-src/common/.dummy .gen-src/.gen-files/common/.dummy .gen-src/.gen-pkg/common/.dummy $(headers.common/third_party/google/gflags/gflags) $(headers.common/base/flags) .gen-obj/common/third_party/google/glog/.glog_gen.0.dummy .gen-obj/common/third_party/google/glog/.glog_gen.1.0.dummy $(headers.common/log/log) $(headers.common/third_party/google/init/init) $(headers.common/base/init) alec.cc .gen-files/.dummy.prereqs
+.gen-obj/alec.cc.o: .gen-src/common/.dummy .gen-src/.gen-files/common/.dummy .gen-src/.gen-pkg/common/.dummy $(headers.common/third_party/google/gflags/gflags) $(headers.common/base/flags) .gen-obj/common/third_party/google/glog/.glog_gen.0.dummy .gen-obj/common/third_party/google/glog/.glog_gen.1.0.dummy $(headers.common/log/log) $(headers.common/third_party/google/init/init) $(headers.common/base/init) $(headers.alec) alec.cc .gen-files/.dummy.prereqs
 	@mkdir -p .gen-obj
 	@echo "Compiling:  alec.cc (c++)"
 	@$(COMPILE.cc) -I -I. -I.gen-files -I.gen-files/common/third_party/google/glog/src -I.gen-src -I.gen-src/.gen-files -I.gen-src/common/third_party/google/glog/src -Icommon/third_party/google/glog/src $(cxx_header_compile_args.common/third_party/google/gflags/gflags) alec.cc -o .gen-obj/alec.cc.o
 
+alec: .gen-obj/alec.cc.o common/base/flags common/base/init common/log/log
 
-.gen-obj/alec: .gen-obj/common/third_party/google/gflags/src/gflags.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_completions.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_nc.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_reporting.cc.o .gen-files/common/third_party/google/glog/lib/libglog.a .gen-obj/common/base/init.cc.o .gen-obj/alec.cc.o .gen-files/.dummy.prereqs
-	@echo "Linking:    .gen-obj/alec"
+.PHONY: alec
+
+
+alec_main: .gen-obj/alec_main .gen-files/.dummy.prereqs
+	@ln -f -s .gen-obj/alec_main alec_main
+
+
+bin/alec_main: .gen-obj/alec_main .gen-files/.dummy.prereqs
+	@mkdir -p bin
+	@ln -f -s ../.gen-obj/alec_main bin/alec_main
+
+alec_main.0:
+
+.PHONY: alec_main.0
+
+
+.gen-obj/alec_main.cc.o: .gen-src/common/.dummy .gen-src/.gen-files/common/.dummy .gen-src/.gen-pkg/common/.dummy $(headers.common/third_party/google/gflags/gflags) $(headers.common/base/flags) .gen-obj/common/third_party/google/glog/.glog_gen.0.dummy .gen-obj/common/third_party/google/glog/.glog_gen.1.0.dummy $(headers.common/log/log) $(headers.common/third_party/google/init/init) $(headers.common/base/init) $(headers.alec) alec_main.cc .gen-files/.dummy.prereqs
 	@mkdir -p .gen-obj
-	@$(LINK.cc)  .gen-obj/alec.cc.o .gen-obj/common/base/init.cc.o .gen-files/common/third_party/google/glog/lib/libglog.a .gen-obj/common/third_party/google/gflags/src/gflags_reporting.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_nc.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_completions.cc.o .gen-obj/common/third_party/google/gflags/src/gflags.cc.o -o .gen-obj/alec
+	@echo "Compiling:  alec_main.cc (c++)"
+	@$(COMPILE.cc) -I -I. -I.gen-files -I.gen-files/common/third_party/google/glog/src -I.gen-src -I.gen-src/.gen-files -I.gen-src/common/third_party/google/glog/src -Icommon/third_party/google/glog/src $(cxx_header_compile_args.common/third_party/google/gflags/gflags) alec_main.cc -o .gen-obj/alec_main.cc.o
+
+
+.gen-obj/alec_main: .gen-obj/common/third_party/google/gflags/src/gflags.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_completions.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_nc.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_reporting.cc.o .gen-files/common/third_party/google/glog/lib/libglog.a .gen-obj/common/base/init.cc.o .gen-obj/alec.cc.o .gen-obj/alec_main.cc.o .gen-files/.dummy.prereqs
+	@echo "Linking:    .gen-obj/alec_main"
+	@mkdir -p .gen-obj
+	@$(LINK.cc)  .gen-obj/alec_main.cc.o .gen-obj/alec.cc.o .gen-obj/common/base/init.cc.o .gen-files/common/third_party/google/glog/lib/libglog.a .gen-obj/common/third_party/google/gflags/src/gflags_reporting.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_nc.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_completions.cc.o .gen-obj/common/third_party/google/gflags/src/gflags.cc.o -o .gen-obj/alec_main
 
 
 .gen-files/common/.git_tree.dummy: .gen-files/flock_script.pl
@@ -343,8 +355,8 @@ clean: .gen-files/.dummy.prereqs
 	@rm -rf .gen-src/.gen-files/common/.dummy
 	@rm -rf .gen-src/.gen-pkg/common/.dummy
 	-@(mkdir -p .gen-files/common/third_party/google/glog; cd common/third_party/google/glog; GEN_DIR="$(ROOT_DIR)/.gen-files/common/third_party/google/glog"; OBJ_DIR="$(ROOT_DIR)/.gen-obj/common/third_party/google/glog"; SRC_DIR="$(ROOT_DIR)/.gen-src/common/third_party/google/glog" ROOT_DIR="$(ROOT_DIR)"  CXX_GCC="$(CXX_GCC)" CC_GCC="$(CC_GCC)" CC="$(CC)" CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" BASIC_CXXFLAGS="$(BASIC_CXXFLAGS)" CFLAGS="$(CFLAGS)" BASIC_CFLAGS="$(BASIC_CFLAGS)" LDFLAGS="$(LDFLAGS)" MAKE="$(MAKE)" GFLAGS_OBJS=".gen-obj/common/third_party/google/gflags/src/*.o" GFLAGS_SRC_ROOT="common/third_party/google/gflags/src"  eval '($$MAKE DESTDIR=$$GEN_DIR clean > /dev/null 2>&1 || echo -n "")' > $(ROOT_DIR)/.gen-files/common/third_party/google/glog.glog_gen.1.0.logfile 2>&1 || (cat $(ROOT_DIR)/.gen-files/common/third_party/google/glog.glog_gen.1.0.logfile; exit 1) )
-	@[ -L alec ] && rm -f alec || true
-	@[ -L bin/alec ] && rm -f bin/alec || true
+	@[ -L alec_main ] && rm -f alec_main || true
+	@[ -L bin/alec_main ] && rm -f bin/alec_main || true
 	@rm -rf .gen-obj
 	@rm -rf bin
 	@rm -rf .gen-files
@@ -362,12 +374,12 @@ INSTALL_PROGRAM=$(INSTALL)
 INSTALL_DATA=$(INSTALL) -m 644
 
 
-install: .gen-files/.dummy.prereqs alec
+install: .gen-files/.dummy.prereqs alec_main
 	@mkdir -p $(DESTDIR)$(bindir)
-	@$(INSTALL_PROGRAM) .gen-obj/alec $(DESTDIR)$(bindir)/alec
+	@$(INSTALL_PROGRAM) .gen-obj/alec_main $(DESTDIR)$(bindir)/alec_main
 
 
-all: alec bin/alec .gen-files/.dummy.prereqs
+all: alec_main bin/alec_main .gen-files/.dummy.prereqs
 
 
 tests: .gen-files/.dummy.prereqs
@@ -375,7 +387,7 @@ tests: .gen-files/.dummy.prereqs
 
 licenses: 
 	@echo "License information."
-	@printf "//:alec =>\n    http://opensource.org/licenses/BSD-3-Clause\n\n"
+	@printf "//:alec_main =>\n    http://opensource.org/licenses/BSD-3-Clause\n\n"
 
 .PHONY: clean all tests install licenses
 

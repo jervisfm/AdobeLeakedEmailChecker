@@ -10,6 +10,8 @@
 #include "common/base/init.h"
 #include "common/log/log.h"
 
+#include "alec.h"
+
 // Program Flags
 DEFINE_string(file_path, "adobe.db", 
 	      "Path to LevelDB file containing leaked Adobe passwords."
@@ -49,15 +51,6 @@ namespace {
     int x;
   };
 
-static void OutputFlags() {
-  LOG(INFO) << "(LevelDB) file_path: " << FLAGS_file_path;
-  LOG(INFO) << "dump_file: " << FLAGS_dump_file;
-  LOG(INFO) << "process_raw_dump?" << FLAGS_process_raw_dump; 
-}
 
 } // anonymous namespace
-int main(int argc, char **argv) {
-  InitProgram(&argc, &argv);
-  OutputFlags();
-  return 0;
-}
+
