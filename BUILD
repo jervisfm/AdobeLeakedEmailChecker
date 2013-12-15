@@ -6,7 +6,8 @@
   "cc_headers": [ "alec.h" ], 
   "dependencies": [ "//common/base:flags",
   		    "//common/base:init", 
-		    "//common/log:log" ]
+		    "//common/log:log",
+		    "//common/strings:stringpiece" ]
   }
 },
 
