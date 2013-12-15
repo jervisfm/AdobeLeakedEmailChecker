@@ -13,6 +13,8 @@ enough to give them your email address.
 The prime motivation in embarking in this endeavor was both pedagogical in terms of learning to dealing with big data dumps and also
 provide an independent / manual method to check if your email was compromised.
 
+# Date Sources:
+* http://stricture-group.com/files/not-adobe.7z (linked from http://www.troyhunt.com/2013/11/using-high-spec-azure-sql-server-for.html)
 
 
 
