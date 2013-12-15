@@ -20,7 +20,34 @@ DEFINE_bool(process_raw_dump, false, "Assumes that the file path "
 	    "in '--dump_file' points to a raw text dump of the credentials and process them"
 	    "to generate an on disk LEVELDB hashtable with the name specified in '--output_file'."
             "The LEVELDB hastable will be queryable in O(1) / constant time. ");
+
 using namespace std;
+
+namespace {
+
+  struct Credentials {
+    string email; // email address 
+    string hash; // encrypted hash of the user password
+    string adobe_id; // adobe user id
+    string hint; // password hint
+  };
+
+
+  // Processes a Raw Password Dumpfile and obtains 
+  // Credentials contained in thiem.
+  class CredentialReader {
+  public:
+    CredentialReader() {
+
+    }
+
+    ~CredentialReader() {
+
+    }
+
+  private:
+    int x;
+  };
 
 static void OutputFlags() {
   LOG(INFO) << "(LevelDB) file_path: " << FLAGS_file_path;
@@ -28,6 +55,7 @@ static void OutputFlags() {
   LOG(INFO) << "process_raw_dump?" << FLAGS_process_raw_dump; 
 }
 
+} // anonymous namespace
 int main(int argc, char **argv) {
   InitProgram(&argc, &argv);
   OutputFlags();
