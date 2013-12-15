@@ -14,7 +14,7 @@
 #include "alec.h"
 
 TEST(Alec, DummyTest) {
-  EXPECT_TRUE( 1 == 2) << "I should fail";
+  EXPECT_TRUE( 1 == 1) << "I should fail";
 }
 
 
