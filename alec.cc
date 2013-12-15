@@ -81,14 +81,67 @@ namespace alec {
 
   // static class method
   bool CredentialReader::ParseLine(const string& line, Credential* result) {
-    // TODO(jervis): Complete and test this method
+    if (result == NULL) {
+      LOG(ERROR) << "Given NULL result pointer";
+      return false;
+    }
+
     // line looks like:
     // 000000010-|--|-person10@dls.net-|-IMj2ZmZchtNM=-|-internet|--
-    // The fomrat is :
+    // The format is :
     // <user_id> | <adobe_username> | <email address> | <password hash> | <password hint>
     // which was obtained from a SOPHOS analysis: http://goo.gl/xIEZSe
-    return false;
     
+    vector<StringPiece> pieces = strings::Split(line, "|");
+    for (auto& piece : pieces) {
+      
+      cout << piece << endl;
+    }
+
+    // Check all the fields are present
+    static const int kExpectedPieces = 6;
+    static const string kEmptyField = "--";
+    if (pieces.size() != kExpectedPieces) {
+      LOG(ERROR) << "Expected line to have " << expected_pieces 
+		 << " '|'-separates pieces but got " << pieces.size()
+		 << "\nLine:" << line;
+      return false;
+    }
+
+    // Sanity Check
+    if ( pieces[5].as_string() != "--") {
+      LOG(WARNING) << "Index 5 did not contain '--' as expected." 
+		   << "Credentials may be incorrectly parsed"
+		   << "Line: " << line;
+    }
+
+    string rec_id = pieces[0].as_string();
+    // record id has form "<rec_id>-", so chop off the trailing '-' character
+    rec_id = rec_id.substr(0, rec_id.size() - 1);
+    
+    // username has form "-<username>-", so chop off the leading/trailing '-' character.
+    string username = pieces[1].as_string();
+    username = username.substr(1, username.size() - 2);
+
+    string email = pieces[2].as_string();
+    // email has form "-<email>-", so chop of the leading and trailing '-' character.
+    email = email.substr(1, email.size() - 2);
+
+    string hash = pieces[3].as_string();
+    // hash has form "-<hash>-", so chop of the leading and trailing '-' character.
+    hash = hash.substr(1, hash.size() - 2);
+    
+    string hint = pieces[4].as_string();
+    // hint has form "-<hint>", so just chop of the leading '-' character
+    hint = hint.substr(1);
+
+    // Okay, save the parsed result
+    result->email = email;
+    result->username = username;
+    result->rec_id = rec_id;
+    result->hint = hint;
+    result->hash = hash;
+    return true;
   }
 
   CredentialReader::~CredentialReader() { ; } 
