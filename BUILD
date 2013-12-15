@@ -9,11 +9,11 @@
 		    "//common/log:log",
 		    "//common/strings:stringpiece", 
 		    "//common/strings:strutil",
-		    "//common/file:linereader ]
+		    "//common/file:linereader" ]
   }
 },
 
-{ "cc_binary": {
+{ "cc_binary": { 
   "name": "alec_main",
   "cc_sources": [ "alec_main.cc" ],
   "dependencies": [ ":alec" ]
