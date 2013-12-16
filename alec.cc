@@ -93,9 +93,10 @@ namespace alec {
     // which was obtained from a SOPHOS analysis: http://goo.gl/xIEZSe
     
     vector<StringPiece> pieces = strings::Split(line, "|");
+    int i = 0;
     for (auto& piece : pieces) {
-      
-      cout << piece << endl;
+      VLOG(2) << "piece " << i << ": " << piece;
+      ++i;
     }
 
     // Check all the fields are present
