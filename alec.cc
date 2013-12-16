@@ -146,6 +146,11 @@ namespace alec {
 
   CredentialReader::~CredentialReader() { ; } 
 
+  bool CredentialProcessor::GenerateDiskHashTable(StringPiece filename) {
+    // TODO(jervis) : Implement this.
+    return false;
+  }
+
 
 } // alec namespace
 

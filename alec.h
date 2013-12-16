@@ -79,6 +79,23 @@ namespace alec {
     
   };
 
+  // Reads Credentials from the given Credential Reader
+  // and saves them into an Ondisk Hashtable. 
+  class CredentialProcessor { 
+  public:
+    CredentialProcessor(CredentialReader* reader) : cred_reader_(reader) {}
+    
+    // Reads through all the Credential records available in the Credential
+    // Reader and saves them to an on-disk LevelDB Hashtable file that has
+    // the name 'filename'. Returns true on success. 
+    bool GenerateDiskHashTable(StringPiece filename);
+    
+    ~CredentialProcessor() {}
+
+  private:
+    CredentialReader* cred_reader_; // not owned
+  };
+
 
 
 } // alec namespace
