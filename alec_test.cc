@@ -16,6 +16,26 @@
 
 using namespace alec;
 
+TEST(Alec, ReadCredentialFile) {
+  CredentialReader reader("sample_cred.txt");
+  EXPECT_FALSE(reader.Done());
+
+  Credential expected_cred;
+  expected_cred.rec_id = "000000006";
+  expected_cred.username = "";
+  expected_cred.email = "person6@yahoo.com";
+  expected_cred.hash = "DGM2c/HbXTIkDDM5y6e6/lQ==";
+  expected_cred.hint = "same";
+
+  Credential cred;
+  while (!reader.Done()) {
+    EXPECT_TRUE(reader.NextCredential(&cred)) << "Failed to get next credential";
+    EXPECT_TRUE ( expected_cred == cred ) 
+      << "Expected Cred:\n" << expected_cred
+      << "**********\nBut Got:\n" << cred;
+  }
+}
+
 TEST(Alec, ParseLine) {
   string line = "000000006-|--|-person6@yahoo.com-|-DGM2c/HbXTIkDDM5y6e6/lQ==-|-same|--";
   Credential expected_cred;
