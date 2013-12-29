@@ -313,15 +313,65 @@ common/file/linereader: .gen-obj/common/file/linereader.cc.o common/log/log comm
 
 .PHONY: common/file/linereader
 
+
+.gen-src/third_party: .gen-files/.dummy.prereqs
+	@mkdir -p .gen-src; [ -d third_party ] || mkdir -p third_party; ln -f -s ../third_party .gen-src/third_party
+
+
+.gen-src/third_party/.dummy: .gen-src/third_party .gen-files/.dummy.prereqs
+	@[ -f .gen-src/third_party/.dummy ] || touch .gen-src/third_party/.dummy
+
+
+.gen-src/.gen-pkg/third_party: .gen-files/.dummy.prereqs
+	@mkdir -p .gen-src/.gen-pkg; [ -d .gen-pkg/third_party ] || mkdir -p .gen-pkg/third_party; ln -f -s ../../.gen-pkg/third_party .gen-src/.gen-pkg/third_party
+
+
+.gen-src/.gen-pkg/third_party/.dummy: .gen-src/.gen-pkg/third_party .gen-files/.dummy.prereqs
+	@[ -f .gen-src/.gen-pkg/third_party/.dummy ] || touch .gen-src/.gen-pkg/third_party/.dummy
+
+
+.gen-src/.gen-files/third_party: .gen-files/.dummy.prereqs
+	@mkdir -p .gen-src/.gen-files; [ -d .gen-files/third_party ] || mkdir -p .gen-files/third_party; ln -f -s ../../.gen-files/third_party .gen-src/.gen-files/third_party
+
+
+.gen-src/.gen-files/third_party/.dummy: .gen-src/.gen-files/third_party .gen-files/.dummy.prereqs
+	@[ -f .gen-src/.gen-files/third_party/.dummy ] || touch .gen-src/.gen-files/third_party/.dummy
+
+third_party/auto_.0: .gen-src/third_party .gen-src/.gen-pkg/third_party .gen-src/.gen-files/third_party
+
+.PHONY: third_party/auto_.0
+
+
+.gen-obj/third_party/leveldb/.leveldb_make.0.dummy: .gen-src/third_party/.dummy .gen-src/.gen-files/third_party/.dummy .gen-src/.gen-pkg/third_party/.dummy .gen-files/.dummy.prereqs
+	@echo "Make:       //third_party/leveldb:leveldb_make.0"
+	@(mkdir -p .gen-files/third_party/leveldb; cd third_party/leveldb; GEN_DIR="$(ROOT_DIR)/.gen-files/third_party/leveldb"; OBJ_DIR="$(ROOT_DIR)/.gen-obj/third_party/leveldb"; SRC_DIR="$(ROOT_DIR)/.gen-src/third_party/leveldb" ROOT_DIR="$(ROOT_DIR)"  CXX_GCC="$(CXX_GCC)" CC_GCC="$(CC_GCC)" CC="$(CC)" CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" BASIC_CXXFLAGS="$(BASIC_CXXFLAGS)" CFLAGS="$(CFLAGS)" BASIC_CFLAGS="$(BASIC_CFLAGS)" LDFLAGS="$(LDFLAGS)" MAKE="$(MAKE)" DEP_CXXFLAGS="" DEP_CFLAGS="" eval '($$MAKE DESTDIR=$$GEN_DIR -f Makefile all)' > $(ROOT_DIR)/.gen-files/third_party/leveldb.leveldb_make.0.logfile 2>&1 || (cat $(ROOT_DIR)/.gen-files/third_party/leveldb.leveldb_make.0.logfile; exit 1) ) && (mkdir -p .gen-obj/third_party/leveldb; touch .gen-obj/third_party/leveldb/.leveldb_make.0.dummy)
+
+third_party/leveldb/leveldb_make.0: .gen-obj/third_party/leveldb/.leveldb_make.0.dummy third_party/auto_.0
+
+.PHONY: third_party/leveldb/leveldb_make.0
+
+
+third_party/leveldb/libleveldb.a: .gen-obj/third_party/leveldb/.leveldb_make.0.dummy .gen-files/.dummy.prereqs
+
+third_party/leveldb/leveldb_make: third_party/leveldb/leveldb_make.0 third_party/auto_.0
+
+.PHONY: third_party/leveldb/leveldb_make
+
+headers.third_party/leveldb/leveldb := third_party/leveldb/include/leveldb/c.h third_party/leveldb/include/leveldb/cache.h third_party/leveldb/include/leveldb/comparator.h third_party/leveldb/include/leveldb/db.h third_party/leveldb/include/leveldb/env.h third_party/leveldb/include/leveldb/filter_policy.h third_party/leveldb/include/leveldb/iterator.h third_party/leveldb/include/leveldb/options.h third_party/leveldb/include/leveldb/slice.h third_party/leveldb/include/leveldb/status.h third_party/leveldb/include/leveldb/table.h third_party/leveldb/include/leveldb/table_builder.h third_party/leveldb/include/leveldb/write_batch.h
+
+third_party/leveldb/leveldb: third_party/leveldb/leveldb_make third_party/auto_.0
+
+.PHONY: third_party/leveldb/leveldb
+
 headers.alec := alec.h
 
 
-.gen-obj/alec.cc.o: .gen-src/common/.dummy .gen-src/.gen-files/common/.dummy .gen-src/.gen-pkg/common/.dummy $(headers.common/third_party/google/gflags/gflags) $(headers.common/base/flags) .gen-obj/common/third_party/google/glog/.glog_gen.0.dummy .gen-obj/common/third_party/google/glog/.glog_gen.1.0.dummy $(headers.common/log/log) $(headers.common/third_party/google/init/init) $(headers.common/base/init) $(headers.common/third_party/google/re2/re2) .gen-obj/common/third_party/stringencoders/.stringencoders_conf.0.dummy .gen-obj/common/third_party/stringencoders/.stringencoders_conf.1.0.dummy $(headers.common/third_party/stringencoders/stringencoders) $(headers.common/strings/strutil) $(headers.common/file/linereader) $(headers.alec) alec.cc .gen-files/.dummy.prereqs
+.gen-obj/alec.cc.o: .gen-src/common/.dummy .gen-src/.gen-files/common/.dummy .gen-src/.gen-pkg/common/.dummy $(headers.common/third_party/google/gflags/gflags) $(headers.common/base/flags) .gen-obj/common/third_party/google/glog/.glog_gen.0.dummy .gen-obj/common/third_party/google/glog/.glog_gen.1.0.dummy $(headers.common/log/log) $(headers.common/third_party/google/init/init) $(headers.common/base/init) $(headers.common/third_party/google/re2/re2) .gen-obj/common/third_party/stringencoders/.stringencoders_conf.0.dummy .gen-obj/common/third_party/stringencoders/.stringencoders_conf.1.0.dummy $(headers.common/third_party/stringencoders/stringencoders) $(headers.common/strings/strutil) $(headers.common/file/linereader) .gen-obj/third_party/leveldb/.leveldb_make.0.dummy .gen-src/third_party/.dummy .gen-src/.gen-files/third_party/.dummy .gen-src/.gen-pkg/third_party/.dummy $(headers.third_party/leveldb/leveldb) $(headers.alec) alec.cc .gen-files/.dummy.prereqs
 	@mkdir -p .gen-obj
 	@echo "Compiling:  alec.cc (c++)"
-	@$(COMPILE.cc) -I -I. -I.gen-files -I.gen-files/common/third_party/google/glog/src -I.gen-src -I.gen-src/.gen-files -I.gen-src/common/third_party/google/glog/src -Icommon/third_party/google/glog/src $(cxx_header_compile_args.common/third_party/google/gflags/gflags) alec.cc -o .gen-obj/alec.cc.o
+	@$(COMPILE.cc) -I -I. -I.gen-files -I.gen-files/common/third_party/google/glog/src -I.gen-files/third_party/leveldb/include -I.gen-src -I.gen-src/.gen-files -I.gen-src/common/third_party/google/glog/src -I.gen-src/third_party/leveldb/include -Icommon/third_party/google/glog/src -Ithird_party/leveldb/include $(cxx_header_compile_args.common/third_party/google/gflags/gflags) alec.cc -o .gen-obj/alec.cc.o
 
-alec: .gen-obj/alec.cc.o common/base/flags common/base/init common/log/log common/strings/stringpiece common/strings/strutil common/file/linereader
+alec: .gen-obj/alec.cc.o common/base/flags common/base/init common/log/log common/strings/stringpiece common/strings/strutil common/file/linereader third_party/leveldb/leveldb
 
 .PHONY: alec
 
@@ -415,19 +465,19 @@ alec_test.0:
 .PHONY: alec_test.0
 
 
-.gen-obj/alec_test.cc.o: .gen-src/common/.dummy .gen-src/.gen-files/common/.dummy .gen-src/.gen-pkg/common/.dummy $(headers.common/third_party/google/gflags/gflags) $(headers.common/base/flags) .gen-obj/common/third_party/google/glog/.glog_gen.0.dummy .gen-obj/common/third_party/google/glog/.glog_gen.1.0.dummy $(headers.common/log/log) $(headers.common/third_party/google/init/init) $(headers.common/base/init) $(headers.common/third_party/google/re2/re2) .gen-obj/common/third_party/stringencoders/.stringencoders_conf.0.dummy .gen-obj/common/third_party/stringencoders/.stringencoders_conf.1.0.dummy $(headers.common/third_party/stringencoders/stringencoders) $(headers.common/strings/strutil) $(headers.common/file/linereader) $(headers.alec) $(headers.common/third_party/google/googletest/googletest) .gen-obj/common/third_party/google/gperftools/.perf_gen.0.dummy .gen-obj/common/third_party/google/gperftools/.perf_gen.1.0.dummy $(headers.common/test/test) alec_test.cc .gen-files/.dummy.prereqs
+.gen-obj/alec_test.cc.o: .gen-src/common/.dummy .gen-src/.gen-files/common/.dummy .gen-src/.gen-pkg/common/.dummy $(headers.common/third_party/google/gflags/gflags) $(headers.common/base/flags) .gen-obj/common/third_party/google/glog/.glog_gen.0.dummy .gen-obj/common/third_party/google/glog/.glog_gen.1.0.dummy $(headers.common/log/log) $(headers.common/third_party/google/init/init) $(headers.common/base/init) $(headers.common/third_party/google/re2/re2) .gen-obj/common/third_party/stringencoders/.stringencoders_conf.0.dummy .gen-obj/common/third_party/stringencoders/.stringencoders_conf.1.0.dummy $(headers.common/third_party/stringencoders/stringencoders) $(headers.common/strings/strutil) $(headers.common/file/linereader) .gen-obj/third_party/leveldb/.leveldb_make.0.dummy .gen-src/third_party/.dummy .gen-src/.gen-files/third_party/.dummy .gen-src/.gen-pkg/third_party/.dummy $(headers.third_party/leveldb/leveldb) $(headers.alec) $(headers.common/third_party/google/googletest/googletest) .gen-obj/common/third_party/google/gperftools/.perf_gen.0.dummy .gen-obj/common/third_party/google/gperftools/.perf_gen.1.0.dummy $(headers.common/test/test) alec_test.cc .gen-files/.dummy.prereqs
 	@mkdir -p .gen-obj
 	@echo "Compiling:  alec_test.cc (c++)"
-	@$(COMPILE.cc) -I -I. -I.gen-files -I.gen-files/common/third_party/google/glog/src -I.gen-files/common/third_party/google/googletest/include -I.gen-src -I.gen-src/.gen-files -I.gen-src/common/third_party/google/glog/src -I.gen-src/common/third_party/google/googletest/include -Icommon/third_party/google/glog/src -Icommon/third_party/google/googletest/include $(cxx_header_compile_args.common/third_party/google/gflags/gflags) alec_test.cc -o .gen-obj/alec_test.cc.o
+	@$(COMPILE.cc) -I -I. -I.gen-files -I.gen-files/common/third_party/google/glog/src -I.gen-files/common/third_party/google/googletest/include -I.gen-files/third_party/leveldb/include -I.gen-src -I.gen-src/.gen-files -I.gen-src/common/third_party/google/glog/src -I.gen-src/common/third_party/google/googletest/include -I.gen-src/third_party/leveldb/include -Icommon/third_party/google/glog/src -Icommon/third_party/google/googletest/include -Ithird_party/leveldb/include $(cxx_header_compile_args.common/third_party/google/gflags/gflags) alec_test.cc -o .gen-obj/alec_test.cc.o
 
 
-.gen-obj/alec_test: .gen-obj/common/third_party/google/gflags/src/gflags.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_completions.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_nc.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_reporting.cc.o .gen-files/common/third_party/google/glog/lib/libglog.a .gen-obj/common/base/init.cc.o .gen-obj/common/third_party/google/re2/stringpiece.cc.o .gen-obj/common/third_party/google/re2/stringprintf.cc.o .gen-files/common/third_party/stringencoders/lib/libmodpbase64.a .gen-obj/common/strings/strutil.cc.o .gen-obj/common/strings/path.cc.o .gen-obj/common/strings/varmap.cc.o .gen-obj/common/file/linereader.cc.o .gen-obj/alec.cc.o .gen-obj/common/third_party/google/googletest/src/gtest-all.cc.o .gen-files/common/third_party/google/gperftools/lib/libtcmalloc_and_profiler.a .gen-obj/alec_test.cc.o .gen-files/.dummy.prereqs
+.gen-obj/alec_test: .gen-obj/common/third_party/google/gflags/src/gflags.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_completions.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_nc.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_reporting.cc.o .gen-files/common/third_party/google/glog/lib/libglog.a .gen-obj/common/base/init.cc.o .gen-obj/common/third_party/google/re2/stringpiece.cc.o .gen-obj/common/third_party/google/re2/stringprintf.cc.o .gen-files/common/third_party/stringencoders/lib/libmodpbase64.a .gen-obj/common/strings/strutil.cc.o .gen-obj/common/strings/path.cc.o .gen-obj/common/strings/varmap.cc.o .gen-obj/common/file/linereader.cc.o third_party/leveldb/libleveldb.a .gen-obj/alec.cc.o .gen-obj/common/third_party/google/googletest/src/gtest-all.cc.o .gen-files/common/third_party/google/gperftools/lib/libtcmalloc_and_profiler.a .gen-obj/alec_test.cc.o .gen-files/.dummy.prereqs
 	@echo "Linking:    .gen-obj/alec_test"
 	@mkdir -p .gen-obj
-	@$(LINK.cc)  .gen-obj/alec_test.cc.o $(LD_FORCE_LINK_START) .gen-files/common/third_party/google/gperftools/lib/libtcmalloc_and_profiler.a $(LD_FORCE_LINK_END) .gen-obj/common/third_party/google/googletest/src/gtest-all.cc.o .gen-obj/alec.cc.o .gen-obj/common/file/linereader.cc.o .gen-obj/common/strings/varmap.cc.o .gen-obj/common/strings/path.cc.o .gen-obj/common/strings/strutil.cc.o .gen-files/common/third_party/stringencoders/lib/libmodpbase64.a .gen-obj/common/third_party/google/re2/stringprintf.cc.o .gen-obj/common/third_party/google/re2/stringpiece.cc.o .gen-obj/common/base/init.cc.o .gen-files/common/third_party/google/glog/lib/libglog.a .gen-obj/common/third_party/google/gflags/src/gflags_reporting.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_nc.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_completions.cc.o .gen-obj/common/third_party/google/gflags/src/gflags.cc.o -o .gen-obj/alec_test
+	@$(LINK.cc)  .gen-obj/alec_test.cc.o $(LD_FORCE_LINK_START) .gen-files/common/third_party/google/gperftools/lib/libtcmalloc_and_profiler.a $(LD_FORCE_LINK_END) .gen-obj/common/third_party/google/googletest/src/gtest-all.cc.o .gen-obj/alec.cc.o third_party/leveldb/libleveldb.a .gen-obj/common/file/linereader.cc.o .gen-obj/common/strings/varmap.cc.o .gen-obj/common/strings/path.cc.o .gen-obj/common/strings/strutil.cc.o .gen-files/common/third_party/stringencoders/lib/libmodpbase64.a .gen-obj/common/third_party/google/re2/stringprintf.cc.o .gen-obj/common/third_party/google/re2/stringpiece.cc.o .gen-obj/common/base/init.cc.o .gen-files/common/third_party/google/glog/lib/libglog.a .gen-obj/common/third_party/google/gflags/src/gflags_reporting.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_nc.cc.o .gen-obj/common/third_party/google/gflags/src/gflags_completions.cc.o .gen-obj/common/third_party/google/gflags/src/gflags.cc.o -o .gen-obj/alec_test
 
 
-.gen-obj/.alec_test.test.0.dummy: .gen-src/common/.dummy .gen-src/.gen-files/common/.dummy .gen-src/.gen-pkg/common/.dummy $(headers.common/third_party/google/gflags/gflags) $(headers.common/base/flags) .gen-obj/common/third_party/google/glog/.glog_gen.0.dummy .gen-obj/common/third_party/google/glog/.glog_gen.1.0.dummy $(headers.common/log/log) $(headers.common/third_party/google/init/init) $(headers.common/base/init) $(headers.common/third_party/google/re2/re2) .gen-obj/common/third_party/stringencoders/.stringencoders_conf.0.dummy .gen-obj/common/third_party/stringencoders/.stringencoders_conf.1.0.dummy $(headers.common/third_party/stringencoders/stringencoders) $(headers.common/strings/strutil) $(headers.common/file/linereader) $(headers.alec) $(headers.common/third_party/google/googletest/googletest) .gen-obj/common/third_party/google/gperftools/.perf_gen.0.dummy .gen-obj/common/third_party/google/gperftools/.perf_gen.1.0.dummy $(headers.common/test/test) .gen-obj/alec_test .gen-obj/alec_test .gen-files/.dummy.prereqs
+.gen-obj/.alec_test.test.0.dummy: .gen-src/common/.dummy .gen-src/.gen-files/common/.dummy .gen-src/.gen-pkg/common/.dummy $(headers.common/third_party/google/gflags/gflags) $(headers.common/base/flags) .gen-obj/common/third_party/google/glog/.glog_gen.0.dummy .gen-obj/common/third_party/google/glog/.glog_gen.1.0.dummy $(headers.common/log/log) $(headers.common/third_party/google/init/init) $(headers.common/base/init) $(headers.common/third_party/google/re2/re2) .gen-obj/common/third_party/stringencoders/.stringencoders_conf.0.dummy .gen-obj/common/third_party/stringencoders/.stringencoders_conf.1.0.dummy $(headers.common/third_party/stringencoders/stringencoders) $(headers.common/strings/strutil) $(headers.common/file/linereader) .gen-obj/third_party/leveldb/.leveldb_make.0.dummy .gen-src/third_party/.dummy .gen-src/.gen-files/third_party/.dummy .gen-src/.gen-pkg/third_party/.dummy $(headers.third_party/leveldb/leveldb) $(headers.alec) $(headers.common/third_party/google/googletest/googletest) .gen-obj/common/third_party/google/gperftools/.perf_gen.0.dummy .gen-obj/common/third_party/google/gperftools/.perf_gen.1.0.dummy $(headers.common/test/test) .gen-obj/alec_test .gen-obj/alec_test .gen-files/.dummy.prereqs
 	@echo "Testing:    .gen-obj/alec_test"
 	@(mkdir -p .gen-files; GEN_DIR="$(ROOT_DIR)/.gen-files"; OBJ_DIR="$(ROOT_DIR)/.gen-obj"; SRC_DIR="$(ROOT_DIR)/.gen-src" ROOT_DIR="$(ROOT_DIR)"  CXX_GCC="$(CXX_GCC)" CC_GCC="$(CC_GCC)" CC="$(CC)" CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" BASIC_CXXFLAGS="$(BASIC_CXXFLAGS)" CFLAGS="$(CFLAGS)" BASIC_CFLAGS="$(BASIC_CFLAGS)" LDFLAGS="$(LDFLAGS)" MAKE="$(MAKE)" GFLAGS_OBJS=".gen-obj/common/third_party/google/gflags/src/*.o" GFLAGS_SRC_ROOT="common/third_party/google/gflags/src" DEP_CXXFLAGS="" DEP_CFLAGS="" eval '($$ROOT_DIR/.gen-obj/alec_test)' > $(ROOT_DIR)/.gen-files.alec_test.test.0.logfile 2>&1 || (cat $(ROOT_DIR)/.gen-files.alec_test.test.0.logfile; exit 1) ) && (mkdir -p .gen-obj; touch .gen-obj/.alec_test.test.0.dummy)
 
@@ -708,12 +758,74 @@ common/third_party/stringencoders/src/modp_mainpage.h: .gen-files/common/.git_tr
 common/third_party/stringencoders/src/modp_numtoa.h: .gen-files/common/.git_tree.dummy
 
 
+.gen-files/third_party/.git_tree.dummy: .gen-files/flock_script.pl
+	@[ -f third_party/.git ] || echo "Sourcing:   //third_party (git submodule)"
+	@[ -d third_party -a ! -f third_party/.git -a  -e .git ] && (touch .gen-files/.gitlock; .gen-files/flock_script.pl .gen-files/.gitlock 'cd .; git submodule update --init third_party || exit 1'); true
+	@mkdir -p .gen-files/third_party
+	@[ -f .gen-files/third_party/.git_tree.dummy ] || touch -t 197101010000 .gen-files/third_party/.git_tree.dummy
+
+
+third_party/BUILD: .gen-files/third_party/.git_tree.dummy
+
+
+third_party/leveldb/BUILD: .gen-files/third_party/.git_tree.dummy
+
+
+third_party/leveldb/include: .gen-files/third_party/.git_tree.dummy
+
+
+third_party/leveldb/include/leveldb/c.h: .gen-files/third_party/.git_tree.dummy
+
+
+third_party/leveldb/include/leveldb/cache.h: .gen-files/third_party/.git_tree.dummy
+
+
+third_party/leveldb/include/leveldb/comparator.h: .gen-files/third_party/.git_tree.dummy
+
+
+third_party/leveldb/include/leveldb/db.h: .gen-files/third_party/.git_tree.dummy
+
+
+third_party/leveldb/include/leveldb/env.h: .gen-files/third_party/.git_tree.dummy
+
+
+third_party/leveldb/include/leveldb/filter_policy.h: .gen-files/third_party/.git_tree.dummy
+
+
+third_party/leveldb/include/leveldb/iterator.h: .gen-files/third_party/.git_tree.dummy
+
+
+third_party/leveldb/include/leveldb/options.h: .gen-files/third_party/.git_tree.dummy
+
+
+third_party/leveldb/include/leveldb/slice.h: .gen-files/third_party/.git_tree.dummy
+
+
+third_party/leveldb/include/leveldb/status.h: .gen-files/third_party/.git_tree.dummy
+
+
+third_party/leveldb/include/leveldb/table.h: .gen-files/third_party/.git_tree.dummy
+
+
+third_party/leveldb/include/leveldb/table_builder.h: .gen-files/third_party/.git_tree.dummy
+
+
+third_party/leveldb/include/leveldb/write_batch.h: .gen-files/third_party/.git_tree.dummy
+
+
+third_party/leveldb/test.cc: .gen-files/third_party/.git_tree.dummy
+
+
 clean: .gen-files/.dummy.prereqs
 	@rm -rf .gen-src/common/.dummy
 	@rm -rf .gen-src/.gen-files/common/.dummy
 	@rm -rf .gen-src/.gen-pkg/common/.dummy
 	-@(mkdir -p .gen-files/common/third_party/google/glog; cd common/third_party/google/glog; GEN_DIR="$(ROOT_DIR)/.gen-files/common/third_party/google/glog"; OBJ_DIR="$(ROOT_DIR)/.gen-obj/common/third_party/google/glog"; SRC_DIR="$(ROOT_DIR)/.gen-src/common/third_party/google/glog" ROOT_DIR="$(ROOT_DIR)"  CXX_GCC="$(CXX_GCC)" CC_GCC="$(CC_GCC)" CC="$(CC)" CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" BASIC_CXXFLAGS="$(BASIC_CXXFLAGS)" CFLAGS="$(CFLAGS)" BASIC_CFLAGS="$(BASIC_CFLAGS)" LDFLAGS="$(LDFLAGS)" MAKE="$(MAKE)" GFLAGS_OBJS=".gen-obj/common/third_party/google/gflags/src/*.o" GFLAGS_SRC_ROOT="common/third_party/google/gflags/src"  eval '($$MAKE DESTDIR=$$GEN_DIR clean > /dev/null 2>&1 || echo -n "")' > $(ROOT_DIR)/.gen-files/common/third_party/google/glog.glog_gen.1.0.logfile 2>&1 || (cat $(ROOT_DIR)/.gen-files/common/third_party/google/glog.glog_gen.1.0.logfile; exit 1) )
 	-@(mkdir -p .gen-files/common/third_party/stringencoders; cd common/third_party/stringencoders; GEN_DIR="$(ROOT_DIR)/.gen-files/common/third_party/stringencoders"; OBJ_DIR="$(ROOT_DIR)/.gen-obj/common/third_party/stringencoders"; SRC_DIR="$(ROOT_DIR)/.gen-src/common/third_party/stringencoders" ROOT_DIR="$(ROOT_DIR)"  CXX_GCC="$(CXX_GCC)" CC_GCC="$(CC_GCC)" CC="$(CC)" CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" BASIC_CXXFLAGS="$(BASIC_CXXFLAGS)" CFLAGS="$(CFLAGS)" BASIC_CFLAGS="$(BASIC_CFLAGS)" LDFLAGS="$(LDFLAGS)" MAKE="$(MAKE)"  eval '($$MAKE DESTDIR=$$GEN_DIR clean > /dev/null 2>&1 || echo -n "")' > $(ROOT_DIR)/.gen-files/common/third_party/stringencoders.stringencoders_conf.1.0.logfile 2>&1 || (cat $(ROOT_DIR)/.gen-files/common/third_party/stringencoders.stringencoders_conf.1.0.logfile; exit 1) )
+	@rm -rf .gen-src/third_party/.dummy
+	@rm -rf .gen-src/.gen-files/third_party/.dummy
+	@rm -rf .gen-src/.gen-pkg/third_party/.dummy
+	-@(mkdir -p .gen-files/third_party/leveldb; cd third_party/leveldb; GEN_DIR="$(ROOT_DIR)/.gen-files/third_party/leveldb"; OBJ_DIR="$(ROOT_DIR)/.gen-obj/third_party/leveldb"; SRC_DIR="$(ROOT_DIR)/.gen-src/third_party/leveldb" ROOT_DIR="$(ROOT_DIR)"  CXX_GCC="$(CXX_GCC)" CC_GCC="$(CC_GCC)" CC="$(CC)" CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" BASIC_CXXFLAGS="$(BASIC_CXXFLAGS)" CFLAGS="$(CFLAGS)" BASIC_CFLAGS="$(BASIC_CFLAGS)" LDFLAGS="$(LDFLAGS)" MAKE="$(MAKE)"  eval '($$MAKE DESTDIR=$$GEN_DIR clean > /dev/null 2>&1 || echo -n "")' > $(ROOT_DIR)/.gen-files/third_party/leveldb.leveldb_make.0.logfile 2>&1 || (cat $(ROOT_DIR)/.gen-files/third_party/leveldb.leveldb_make.0.logfile; exit 1) )
 	-@(mkdir -p .gen-files/common/third_party/google/gperftools; cd common/third_party/google/gperftools; GEN_DIR="$(ROOT_DIR)/.gen-files/common/third_party/google/gperftools"; OBJ_DIR="$(ROOT_DIR)/.gen-obj/common/third_party/google/gperftools"; SRC_DIR="$(ROOT_DIR)/.gen-src/common/third_party/google/gperftools" ROOT_DIR="$(ROOT_DIR)"  CXX_GCC="$(CXX_GCC)" CC_GCC="$(CC_GCC)" CC="$(CC)" CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" BASIC_CXXFLAGS="$(BASIC_CXXFLAGS)" CFLAGS="$(CFLAGS)" BASIC_CFLAGS="$(BASIC_CFLAGS)" LDFLAGS="$(LDFLAGS)" MAKE="$(MAKE)"  eval '($$MAKE DESTDIR=$$GEN_DIR clean > /dev/null 2>&1 || echo -n "")' > $(ROOT_DIR)/.gen-files/common/third_party/google/gperftools.perf_gen.1.0.logfile 2>&1 || (cat $(ROOT_DIR)/.gen-files/common/third_party/google/gperftools.perf_gen.1.0.logfile; exit 1) )
 	@[ -L alec_test ] && rm -f alec_test || true
 	@[ -L bin/alec_test ] && rm -f bin/alec_test || true
@@ -755,7 +867,7 @@ licenses:
 .DEFAULT_GOAL=all
 
 
-.gen-files/.dummy.prereqs: .gen-files/common/.git_tree.dummy
+.gen-files/.dummy.prereqs: .gen-files/common/.git_tree.dummy .gen-files/third_party/.git_tree.dummy
 	@mkdir -p .gen-files
 	@touch .gen-files/.dummy.prereqs
 

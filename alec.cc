@@ -8,7 +8,10 @@
 #include "common/strings/strutil.h"
 #include "common/log/log.h"
 
+#include "third_party/leveldb/leveldb.h"
+
 #include "alec.h" 
+
 
 // Flags
 DEFINE_string(file_path, "adobe.db", 
@@ -147,8 +150,52 @@ namespace alec {
   CredentialReader::~CredentialReader() { ; } 
 
   bool CredentialProcessor::GenerateDiskHashTable(StringPiece filename) {
-    // TODO(jervis) : Implement this.
-    return false;
+    // Open a LevelDB Database
+    leveldb::DB* db;
+    leveldb::Options options;
+    leveldb::Status status;
+    options.create_if_missing = true;
+    const string& filename_string = filename.ToString();
+    status = leveldb::DB::Open(options, filename_string, &db);
+    if (!status.ok()) {
+      LOG(ERROR) << "Failed to Open LevelDB Database: " << filename_string ;
+      return false;
+    }
+    
+    // Read and save all credentals objects
+    Credential cred;
+    bool success_read;
+    int count = 0, failed_reads = 0, failed_writes = 0;
+    while (!cred_reader_->Done()) {
+      LOG_EVERY_N(INFO, 10) << "Processing Record #" << count;
+      success_read = cred_reader_->NextCredential(&cred);
+      if (!success_read) {
+	++failed_reads;
+	LOG(WARNING) << "Failed to obtain credential record # " << count
+		     << ". Total Read Failures now at: " << failed_reads;
+	++count;
+	continue;
+      }
+
+      // Save the record to disk
+      string key = cred.email;
+      char *cred_data = reinterpret_cast<char*>(&cred);
+      int cred_size = sizeof(cred);
+      leveldb::Slice value(cred_data, cred_size);
+      
+      status = db->Put(leveldb::WriteOptions(), key, value);
+      if (!status.ok()) {
+	++failed_writes;
+	LOG(WARNING) << "Failed to save credential record # " << count
+		     << ". Total Write Failures now at: " << failed_writes;
+      }
+      ++count;
+    }
+    
+    // Close the Database
+    delete db;
+
+    return true;
   }
 
 

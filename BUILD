@@ -9,7 +9,8 @@
 		    "//common/log:log",
 		    "//common/strings:stringpiece", 
 		    "//common/strings:strutil",
-		    "//common/file:linereader" ]
+		    "//common/file:linereader",
+		    "//third_party/leveldb:leveldb" ]
   }
 },
 
@@ -26,6 +27,14 @@
   "dependencies": [ ":alec",
   		    "//common/test:test" ]
   }
+},
+
+{ "cc_test": {
+  "name": "leveldb_test",
+  "cc_sources": [ "test.cc" ],
+  "dependencies": [ "//third_party/leveldb:leveldb" ]
+  }
 }
+
 
 ]

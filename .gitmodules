@@ -3,4 +3,4 @@
 	url = https://github.com/jervisfm/common
 [submodule "third_party"]
 	path = third_party
-	url = https://github.com/jervisfm/third_party
+	url = git@github.com:jervisfm/third_party.git

@@ -54,6 +54,9 @@ TEST(Alec, ParseLine) {
     << "**********\nBut Got:\n" << actual_cred;
 }
 
+TEST(Alec, TestLevelDB) {
+  EXPECT_TRUE(1 == 2) << "ahh";
+}
 
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
