@@ -81,6 +81,24 @@ namespace alec {
     }
   }
 
+  // Returns a copy of the string 's' without the 
+  // leading and trailing '-' where applicable
+  static string RemoveLeadingTrailingMinus(string s) {
+    int first_idx = 0, last_idx = s.size() - 1;
+    char minus = '-';
+    bool leading_minus = s[first_idx] == minus;
+    bool trailing_minus = s[last_idx] == minus;
+    if (leading_minus && trailing_minus) {
+      return s.substr(1, s.size() - 2);
+    } else if (leading_minus) {
+      return s.substr(1, s.size() - 1 );
+    } else if (trailing_minus) {
+      return s.substr(0, s.size() - 1);
+    } else {
+      return s;
+    }
+  }
+
   // static class method
   bool CredentialReader::ParseLine(const string& line, Credential* result) {
     bool warnings_occurred = false;
@@ -124,6 +142,19 @@ namespace alec {
     // separate username and domain parts. This looks like this:
     // 115985151-|--|-kadja_83|@yahoo.es-|-CWWWYFjjxa/ioxG6CatHBw==-|-dra|--
     bool email_special_case = pieces.size() == 7;
+
+    // It's also possible that the email is not split, even when we have 7 pieces. E.g.
+    // 103228954-|--|-augihol@yahoo.com|-|-0lWluyxrPejioxG6CatHBw==-|-|--
+    int domain_idx = email_idx + 1;
+    if (domain_idx <= kMaxIdx) {
+      string domain = pieces[domain_idx].as_string();
+      // A valid email domain is assumed to contain at least one "." character
+      // If this is not the case, then we're not in our email special case mode.
+      if (domain.find(".") == string::npos) {
+	email_special_case = false;
+      }
+    }
+
     if (email_special_case) { 
       // The hash/hint fields are one away from their normal/expected location
       ++hash_idx;
@@ -132,30 +163,30 @@ namespace alec {
 
     string rec_id = rec_id_idx <= kMaxIdx ? pieces[rec_id_idx].as_string() : "NA";
     // record id has form "<rec_id>-", so chop off the trailing '-' character
-    rec_id = rec_id.substr(0, rec_id.size() - 1);
+    rec_id = RemoveLeadingTrailingMinus(rec_id);
     
     // username has form "-<username>-", so chop off the leading/trailing '-' character.
     string username = username_idx <= kMaxIdx ? 
       pieces[username_idx].as_string() : "NA";
-    username = username.substr(1, username.size() - 2);
+    username = RemoveLeadingTrailingMinus(username);
 
     string email = email_idx <= kMaxIdx ? pieces[email_idx].as_string() : "NA";
     // email has form "-<email>-", so chop of the leading and trailing '-' character.
-    email = email.substr(1, email.size() - 2);
+    email = RemoveLeadingTrailingMinus(email);
     if (email_special_case) { 
       string domain = pieces[email_idx+1].as_string();
       // Domain looks like: '@yahoo.es-', so get rid of trailing '-'
-      domain = domain.substr(0, domain.size() - 1);
+      domain = RemoveLeadingTrailingMinus(domain);
       email += domain;
     }
 
     string hash = hash_idx <= kMaxIdx ? pieces[hash_idx].as_string() : "NA";
     // hash has form "-<hash>-", so chop of the leading and trailing '-' character.
-    hash = hash.substr(1, hash.size() - 2);
+    hash = RemoveLeadingTrailingMinus(hash); 
     
     string hint = hint_idx <= kMaxIdx ? pieces[hint_idx].as_string() : "NA";
     // hint has form "-<hint>", so just chop of the leading '-' character
-    hint = hint.substr(1);
+    hint = RemoveLeadingTrailingMinus(hint);
 
     // Okay, save the parsed result
     result->email = email;
