@@ -74,7 +74,9 @@ namespace alec {
       return false;
     } else {
         *output = cred;
-	file_reader_.Next();
+	if (!file_reader_.Done()) {
+	  file_reader_.Next();
+	}
 	return true;
     }
   }
