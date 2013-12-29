@@ -12,18 +12,6 @@
 
 #include "alec.h" 
 
-
-// Flags
-DEFINE_string(file_path, "adobe.db", 
-	      "Path to LevelDB file containing leaked Adobe passwords."
-	      "Defaults to using 'adobe.db'");
-DEFINE_string(dump_file, "adobe_dump.txt", 
-	      "File path to the uncompressed raw dump of the adobe credentials.");
-DEFINE_bool(process_raw_dump, false, "Assumes that the file path "
-	    "in '--dump_file' points to a raw text dump of the credentials and process them"
-	    "to generate an on disk LEVELDB hashtable with the name specified in '--output_file'."
-            "The LEVELDB hastable will be queryable in O(1) / constant time. ");
-
 using namespace std;
 
 namespace alec {
@@ -162,7 +150,7 @@ namespace alec {
       return false;
     }
     
-    // Read and save all credentals objects
+    // Read and save all credential records
     Credential cred;
     bool success_read;
     int count = 0, failed_reads = 0, failed_writes = 0;
