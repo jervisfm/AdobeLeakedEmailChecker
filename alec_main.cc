@@ -38,6 +38,9 @@ static bool ProcessRawDump() {
   CredentialReader reader(FLAGS_dump_file);
   CredentialProcessor processor(&reader);
   bool success = processor.GenerateDiskHashTable(FLAGS_file_path);
+  if (success) { 
+    LOG(INFO) << "Successfully Generated OnDisk HashTable !!";
+  }
   return success;
 }
 

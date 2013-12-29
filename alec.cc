@@ -173,6 +173,13 @@ namespace alec {
 
   CredentialReader::~CredentialReader() { ; } 
 
+  static string NumberFormat(long n) {
+    stringstream ss;
+    locale l("");
+    ss.imbue(l);
+    ss << fixed << n;
+    return ss.str();
+  }
   bool CredentialProcessor::GenerateDiskHashTable(StringPiece filename) {
     // Open a LevelDB Database
     leveldb::DB* db;
@@ -191,7 +198,8 @@ namespace alec {
     bool success_read;
     int count = 0, failed_reads = 0, failed_writes = 0;
     while (!cred_reader_->Done()) {
-      LOG_EVERY_N(INFO, 100000) << "Processing Record #" << count << " ...";
+      
+      LOG_EVERY_N(INFO, 100000) << "Processing Record #" << NumberFormat(count) << " ...";
       success_read = cred_reader_->NextCredential(&cred);
       if (!success_read) {
 	++failed_reads;
