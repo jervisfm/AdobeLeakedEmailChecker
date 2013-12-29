@@ -10,15 +10,6 @@
 #include "common/strings/stringpiece.h"
 #include "common/file/linereader.h"
 
-// Flags
-
-
-
-
-DECLARE_string(file_path);
-DECLARE_string(dump_file);
-DECLARE_bool(process_raw_dump);
-
 using std::string;
 using std::ostream;
 
