@@ -81,12 +81,13 @@ namespace alec {
 
   // static class method
   bool CredentialReader::ParseLine(const string& line, Credential* result) {
+    bool warnings_occurred = false;
     if (result == NULL) {
       LOG(ERROR) << "Given NULL result pointer";
       return false;
     }
 
-    // line looks like:
+    // line mostly looks like:
     // 000000010-|--|-person10@dls.net-|-IMj2ZmZchtNM=-|-internet|--
     // The format is :
     // <user_id> | <adobe_username> | <email address> | <password hash> | <password hint>
@@ -102,36 +103,58 @@ namespace alec {
     // Check all the fields are present
     static const int kExpectedPieces = 6;
     if (pieces.size() != kExpectedPieces) {
-      LOG(ERROR) << "Expected line to have " << kExpectedPieces
+      LOG(WARNING) << "Expected line to have " << kExpectedPieces
 		 << " '|'-separates pieces but got " << pieces.size()
 		 << "\nLine:" << line;
-      return false;
+      warnings_occurred = true;
     }
 
+    // Default expected indexes into the 'pieces' string vector
+    int rec_id_idx = 0, username_idx = 1, email_idx = 2, 
+      hash_idx = 3, hint_idx = 4;
+  
     // Sanity Check
     if ( pieces[5].as_string() != "--") {
       LOG(WARNING) << "Index 5 did not contain '--' as expected." 
 		   << "Credentials may be incorrectly parsed"
 		   << "Line: " << line;
+      warnings_occurred = true;
     }
 
-    string rec_id = pieces[0].as_string();
+    // There's a special case when 'line' is split into exactly 
+    // 7 pieces. In this scenario, the email is split into 
+    // separate username and domain parts. This looks like this:
+    // 115985151-|--|-kadja_83|@yahoo.es-|-CWWWYFjjxa/ioxG6CatHBw==-|-dra|--
+    bool email_special_case = pieces.size() == 7;
+    if (email_special_case) { 
+      // The hash/hint fields are one away from their normal/expected location
+      ++hash_idx;
+      ++hint_idx;
+    }
+
+    string rec_id = pieces[rec_id_idx].as_string();
     // record id has form "<rec_id>-", so chop off the trailing '-' character
     rec_id = rec_id.substr(0, rec_id.size() - 1);
     
     // username has form "-<username>-", so chop off the leading/trailing '-' character.
-    string username = pieces[1].as_string();
+    string username = pieces[username_idx].as_string();
     username = username.substr(1, username.size() - 2);
 
-    string email = pieces[2].as_string();
+    string email = pieces[email_idx].as_string();
     // email has form "-<email>-", so chop of the leading and trailing '-' character.
     email = email.substr(1, email.size() - 2);
+    if (email_special_case) { 
+      string domain = pieces[email_idx+1].as_string();
+      // Domain looks like: '@yahoo.es-', so get rid of trailing '-'
+      domain = domain.substr(0, domain.size() - 1);
+      email += domain;
+    }
 
-    string hash = pieces[3].as_string();
+    string hash = pieces[hash_idx].as_string();
     // hash has form "-<hash>-", so chop of the leading and trailing '-' character.
     hash = hash.substr(1, hash.size() - 2);
     
-    string hint = pieces[4].as_string();
+    string hint = pieces[hint_idx].as_string();
     // hint has form "-<hint>", so just chop of the leading '-' character
     hint = hint.substr(1);
 
@@ -141,6 +164,11 @@ namespace alec {
     result->rec_id = rec_id;
     result->hint = hint;
     result->hash = hash;
+
+    // Print out the Parsed Credential object if warning occured
+    if (warnings_occurred) {
+      LOG(WARNING) << "Parsed Credential is\n" << *result << "\n---------";
+    }
     return true;
   }
 
