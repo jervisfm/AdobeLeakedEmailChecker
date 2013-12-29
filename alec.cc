@@ -100,12 +100,13 @@ namespace alec {
       ++i;
     }
 
-    // Check all the fields are present
+    // Sanity check if expected fields are present
     static const int kExpectedPieces = 6;
     if (pieces.size() != kExpectedPieces) {
       LOG(WARNING) << "Expected line to have " << kExpectedPieces
-		 << " '|'-separates pieces but got " << pieces.size()
-		 << "\nLine:" << line;
+		   << " '|'-separates pieces but got " << pieces.size()
+		   << ". Credentials may be incorrectly parsed.\n"
+		   << "\nLine:" << line;
       warnings_occurred = true;
     }
 
@@ -113,14 +114,9 @@ namespace alec {
     int rec_id_idx = 0, username_idx = 1, email_idx = 2, 
       hash_idx = 3, hint_idx = 4;
   
-    // Sanity Check
-    if ( pieces[5].as_string() != "--") {
-      LOG(WARNING) << "Index 5 did not contain '--' as expected." 
-		   << "Credentials may be incorrectly parsed"
-		   << "Line: " << line;
-      warnings_occurred = true;
-    }
-
+    // Find the max valid index value
+    const int kMaxIdx = pieces.size() - 1;
+    
     // There's a special case when 'line' is split into exactly 
     // 7 pieces. In this scenario, the email is split into 
     // separate username and domain parts. This looks like this:
@@ -132,15 +128,16 @@ namespace alec {
       ++hint_idx;
     }
 
-    string rec_id = pieces[rec_id_idx].as_string();
+    string rec_id = rec_id_idx <= kMaxIdx ? pieces[rec_id_idx].as_string() : "NA";
     // record id has form "<rec_id>-", so chop off the trailing '-' character
     rec_id = rec_id.substr(0, rec_id.size() - 1);
     
     // username has form "-<username>-", so chop off the leading/trailing '-' character.
-    string username = pieces[username_idx].as_string();
+    string username = username_idx <= kMaxIdx ? 
+      pieces[username_idx].as_string() : "NA";
     username = username.substr(1, username.size() - 2);
 
-    string email = pieces[email_idx].as_string();
+    string email = email_idx <= kMaxIdx ? pieces[email_idx].as_string() : "NA";
     // email has form "-<email>-", so chop of the leading and trailing '-' character.
     email = email.substr(1, email.size() - 2);
     if (email_special_case) { 
@@ -150,11 +147,11 @@ namespace alec {
       email += domain;
     }
 
-    string hash = pieces[hash_idx].as_string();
+    string hash = hash_idx <= kMaxIdx ? pieces[hash_idx].as_string() : "NA";
     // hash has form "-<hash>-", so chop of the leading and trailing '-' character.
     hash = hash.substr(1, hash.size() - 2);
     
-    string hint = pieces[hint_idx].as_string();
+    string hint = hint_idx <= kMaxIdx ? pieces[hint_idx].as_string() : "NA";
     // hint has form "-<hint>", so just chop of the leading '-' character
     hint = hint.substr(1);
 
