@@ -58,16 +58,25 @@ namespace alec {
     } 
 
     Credential cred;
-    const string& line = file_reader_.line();
+    // Find a non-empty credentials line
+    bool line_empty;
+    string line;
+    do {
+      line = file_reader_.line();
+      line_empty = line.empty();
+      if (line_empty) {
+	file_reader_.Next();
+      }
+    } while (line_empty);
+
     if (!ParseLine(line, &cred)) {
-      LOG(ERROR) << "Failed to Parse Line: " << line;
+      LOG(ERROR) << "Failed to Parse Line: '" << line << "'";
       return false;
     } else {
         *output = cred;
 	file_reader_.Next();
 	return true;
     }
-	
   }
 
   // static class method
@@ -155,7 +164,7 @@ namespace alec {
     bool success_read;
     int count = 0, failed_reads = 0, failed_writes = 0;
     while (!cred_reader_->Done()) {
-      LOG_EVERY_N(INFO, 10) << "Processing Record #" << count;
+      LOG_EVERY_N(INFO, 100000) << "Processing Record #" << count << " ...";
       success_read = cred_reader_->NextCredential(&cred);
       if (!success_read) {
 	++failed_reads;
@@ -166,7 +175,7 @@ namespace alec {
       }
 
       // Save the record to disk
-      string key = cred.email;
+      string key = strings::LowerString(cred.email);
       char *cred_data = reinterpret_cast<char*>(&cred);
       int cred_size = sizeof(cred);
       leveldb::Slice value(cred_data, cred_size);
