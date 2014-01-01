@@ -65,7 +65,11 @@ namespace alec {
       line = file_reader_.line();
       line_empty = line.empty();
       if (line_empty) {
-	file_reader_.Next();
+	if (!Done()) {
+	  file_reader_.Next();
+	} else {
+	  return false;
+	}
       }
     } while (line_empty);
 
@@ -74,7 +78,7 @@ namespace alec {
       return false;
     } else {
         *output = cred;
-	if (!file_reader_.Done()) {
+	if (!Done()) {
 	  file_reader_.Next();
 	}
 	return true;
